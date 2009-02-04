@@ -2,10 +2,22 @@ package com.availity.learning.mocktesting;
 
 public class CarePrescribeBPOImpl  {
 	
-	private UserDao userDao;
-	private OrganizationDao organizationDao;
-	private PrematicsService prematicsService;
+	private final UserDao userDao;
+	private final OrganizationDao organizationDao;
+	private final PrematicsService prematicsService;
 	
+	
+	
+	public CarePrescribeBPOImpl(UserDao userDao,
+			OrganizationDao organizationDao, PrematicsService prematicsService) {
+		super();
+		this.userDao = userDao;
+		this.organizationDao = organizationDao;
+		this.prematicsService = prematicsService;
+	}
+
+
+
 	public void sendServiceRequest(String user)  {
 	    try {
 	      //Send Organization request if necessary
