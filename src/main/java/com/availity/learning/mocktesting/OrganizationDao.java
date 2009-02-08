@@ -2,6 +2,6 @@ package com.availity.learning.mocktesting;
 
 public interface OrganizationDao {
 
-	String getOrganization(String user);
+  String getOrganization(String user);
 
 }
