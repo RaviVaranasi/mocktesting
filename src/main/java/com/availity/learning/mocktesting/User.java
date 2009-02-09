@@ -13,7 +13,6 @@ public class User implements Serializable {
   private Long id;
   private String username;                    // required
   private String password;                    // required
-  private String confirmPassword;
   private String passwordHint;
   private String firstName;                   // required
   private String lastName;                    // required
@@ -50,11 +49,6 @@ public class User implements Serializable {
   @Column(nullable = false)
   public String getPassword() {
     return password;
-  }
-
-  @Transient
-  public String getConfirmPassword() {
-    return confirmPassword;
   }
 
   @Column(name = "password_hint")
@@ -107,10 +101,6 @@ public class User implements Serializable {
 
   public void setPassword(String password) {
     this.password = password;
-  }
-
-  public void setConfirmPassword(String confirmPassword) {
-    this.confirmPassword = confirmPassword;
   }
 
   public void setPasswordHint(String passwordHint) {

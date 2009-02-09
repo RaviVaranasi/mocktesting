@@ -1,11 +1,8 @@
 package com.availity.learning.mocktesting;
 
-import org.springframework.core.annotation.AnnotationUtils;
-import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
-import org.springframework.orm.hibernate3.SessionFactoryUtils;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
-import javax.persistence.Table;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -13,8 +10,15 @@ import java.util.List;
 public class UserRepository extends HibernateDaoSupport implements UserDao {
 
   @SuppressWarnings("unchecked")
+  public User getUser(Long id) {
+    List<User> users = getHibernateTemplate().find("from User u where id=?", id);
+    return users != null && !users.isEmpty() ? users.get(0) : new User();
+  }
+
+  @SuppressWarnings("unchecked")
   public User getUser(String username) {
-    return (User) getHibernateTemplate().find("from User u where username=?", username);
+    List<User> users = getHibernateTemplate().find("from User u where username=?", username);
+    return users != null && !users.isEmpty() ? users.get(0) : new User();
   }
 
   @SuppressWarnings("unchecked")
@@ -29,6 +33,9 @@ public class UserRepository extends HibernateDaoSupport implements UserDao {
     return user;
   }
 
+  public void remove(Long id) {
+    getHibernateTemplate().delete(this.getUser(id));
+  }
 
   public boolean isRegistered(String user) {
     return false;  //To change body of implemented methods use File | Settings | File Templates.

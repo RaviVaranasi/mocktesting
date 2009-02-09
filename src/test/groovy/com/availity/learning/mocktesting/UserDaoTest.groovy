@@ -1,7 +1,7 @@
 package com.availity.learning.mocktesting
 
-import org.springframework.dao.DataAccessException
-import org.springframework.dao.DataIntegrityViolationException
+import org.hibernate.SessionFactory
+import org.springframework.orm.hibernate3.HibernateTemplate
 import org.springframework.test.AbstractTransactionalDataSourceSpringContextTests
 
 /**
@@ -11,102 +11,54 @@ import org.springframework.test.AbstractTransactionalDataSourceSpringContextTest
 public class UserDaoTest extends AbstractTransactionalDataSourceSpringContextTests {
 
   protected String[] getConfigLocations() {
-    setAutowireMode(AUTOWIRE_BY_NAME);
+    setAutowireMode(AUTOWIRE_BY_NAME)
+    setDependencyCheck(false)
     def returnString
     return ["classpath:/applicationContext-resources.xml"] as String[]
   }
 
-  private UserDao dao = null;
+  private UserDao dao = null
 
   public void setUserDao(UserDao dao) {
-    this.dao = dao;
-  }
-
-  public void testGetUserInvalid() throws Exception {
-    try {
-      dao.get(1000L);
-      fail("'badusername' found in database, failing test...");
-    } catch (DataAccessException d) {
-      assertTrue(d != null);
-    }
+    this.dao = dao
   }
 
   public void testGetUser() throws Exception {
-    User user = dao.get(-1L);
+    User user = dao.getUser(-1L);
+    println user.id
+    println user.firstName
 
-    assertNotNull(user);
-    assertEquals(1, user.getRoles().size());
-    assertTrue(user.isEnabled());
-  }
-
-  public void testGetUserPassword() throws Exception {
-    User user = dao.get(-1L);
-    String password = dao.getUserPassword(user.getUsername());
-    assertNotNull(password);
-    log.debug("password: " + password);
-  }
-
-  public void testUpdateUser() throws Exception {
-    User user = dao.get(-1L);
-
-
-    dao.saveUser(user);
-    flush();
-
-    user = dao.get(-1L);
-    assertEquals(address, user.getAddress());
-    assertEquals("new address", user.getAddress().getAddress());
-
-    // verify that violation occurs when adding new user with same username
-    user.setId(null);
-
-    endTransaction();
-
-    try {
-      dao.saveUser(user);
-      flush();
-      fail("saveUser didn't throw DataIntegrityViolationException");
-    } catch (DataIntegrityViolationException e) {
-      assertNotNull(e);
-      log.debug("expected exception: " + e.getMessage());
-    }
+    assert user != null
+    assert user.getId() != null
   }
 
   public void testAddAndRemoveUser() throws Exception {
-    User user = new User("testuser");
-    user.setPassword("testpass");
-    user.setFirstName("Test");
-    user.setLastName("Last");
-    user.setAddress(address);
-    user.setEmail("testuser@appfuse.org");
-    user.setWebsite("http://raibledesigns.com");
+    def user = new User("testuser")
+    user.password = "testpass"
+    user.firstName = "Test"
+    user.lastName = "Last";
+    user.email = "testuser@appfuse.org";
 
     user = dao.saveUser(user);
     flush();
 
-    assertNotNull(user.getId());
-    user = dao.get(user.getId());
-    assertEquals("testpass", user.getPassword());
+    assert null != user.getId()
+    user = dao.getUser(user.getId())
+    assert "testpass" == user.getPassword()
 
+    assert user.password == "testpass"
     dao.remove(user.getId());
     flush();
 
-    try {
-      dao.get(user.getId());
-      fail("getUser didn't throw DataAccessException");
-    } catch (DataAccessException d) {
-      assertNotNull(d);
-    }
+    def userAgain = dao.getUser(user.getId());
+
+    assert userAgain.password != "testpass"
   }
 
-  public void testUserExists() throws Exception {
-    boolean b = dao.exists(-1L);
-    assertTrue(b);
+  protected void flush() {
+    HibernateTemplate hibernateTemplate =
+    new HibernateTemplate((SessionFactory) applicationContext.getBean("sessionFactory"));
+    hibernateTemplate.flush();
+    hibernateTemplate.clear();
   }
-
-  public void testUserNotExists() throws Exception {
-    boolean b = dao.exists(111L);
-    assertFalse(b);
-  }
-
 }
