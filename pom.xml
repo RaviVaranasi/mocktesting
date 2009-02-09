@@ -13,6 +13,21 @@
   <packaging>jar</packaging>
   <dependencies>
     <dependency>
+      <groupId>${jdbc.groupId}</groupId>
+      <artifactId>${jdbc.artifactId}</artifactId>
+      <version>${jdbc.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>javax.persistence</groupId>
+      <artifactId>persistence-api</artifactId>
+      <version>${jpa.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>net.sf.ehcache</groupId>
+      <artifactId>ehcache</artifactId>
+      <version>${ehcache.version}</version>
+    </dependency>
+    <dependency>
       <groupId>org.codehaus.groovy.maven.runtime</groupId>
       <artifactId>gmaven-runtime-default</artifactId>
       <version>1.0-rc-3</version>
@@ -28,6 +43,42 @@
       <artifactId>junit</artifactId>
       <version>4.5</version>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring</artifactId>
+      <version>2.5.6</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-test</artifactId>
+      <version>2.5.6</version>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate</artifactId>
+      <version>3.2.6.ga</version>
+      <exclusions>
+        <exclusion>
+          <artifactId>ehcache</artifactId>
+          <groupId>net.sf.ehcache</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>commons-collections</artifactId>
+          <groupId>commons-collections</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-annotations</artifactId>
+      <version>3.3.0.ga</version>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-commons-annotations</artifactId>
+      <version>3.3.0.ga</version>
     </dependency>
   </dependencies>
   <build>
@@ -55,6 +106,54 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>hibernate3-maven-plugin</artifactId>
+        <version>2.0-alpha-2</version>
+        <configuration>
+          <components>
+            <component>
+              <name>hbm2ddl</name>
+              <implementation>annotationconfiguration</implementation>
+            </component>
+          </components>
+          <componentProperties>
+            <drop>true</drop>
+            <jdk5>true</jdk5>
+            <propertyfile>target/test-classes/jdbc.properties</propertyfile>
+            <skip>${maven.test.skip}</skip>
+          </componentProperties>
+        </configuration>
+        
+        <executions>
+          <execution>
+            <phase>process-test-resources</phase>
+            <goals>
+              <goal>hbm2ddl</goal>
+            </goals>
+          </execution>
+        </executions>
+        <dependencies>
+          <dependency>
+            <groupId>${jdbc.groupId}</groupId>
+            <artifactId>${jdbc.artifactId}</artifactId>
+            <version>${jdbc.version}</version>
+          </dependency>
+        </dependencies>
+      </plugin>
     </plugins>
   </build>
+  <properties>
+    <dbunit.dataTypeFactoryName>org.dbunit.ext.hsqldb.HsqldbDataTypeFactory</dbunit.dataTypeFactoryName>
+    <hibernate.dialect>org.hibernate.dialect.HSQLDialect</hibernate.dialect>
+    <jdbc.groupId>hsqldb</jdbc.groupId>
+    <jdbc.artifactId>hsqldb</jdbc.artifactId>
+    <jdbc.version>1.8.0.7</jdbc.version>
+    <jdbc.driverClassName>org.hsqldb.jdbcDriver</jdbc.driverClassName>
+    <jdbc.url><![CDATA[jdbc:hsqldb:${java.io.tmpdir}/mock_groovy;shutdown=true]]></jdbc.url>
+    <jdbc.username>sa</jdbc.username>
+    <jdbc.password></jdbc.password>
+    <jpa.version>1.0</jpa.version>
+    <ehcache.version>1.4.1</ehcache.version>
+  </properties>
 </project>

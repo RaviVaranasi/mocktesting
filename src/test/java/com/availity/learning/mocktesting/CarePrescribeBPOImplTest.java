@@ -22,7 +22,6 @@ public class CarePrescribeBPOImplTest {
   public void shouldTestUsingMockitExample() throws PrematicsException {
     when(userDao.isRegistered("user")).thenReturn(Boolean.TRUE);
 
-
     CarePrescribeBPOImpl carePrescribeService = new CarePrescribeBPOImpl(userDao,
       organizationDao, prematicsService);
     carePrescribeService.sendServiceRequest("user");
