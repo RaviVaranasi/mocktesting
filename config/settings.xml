@@ -1,0 +1,91 @@
+<settings>
+  <servers> 
+    <server>
+      <id>snapshots</id>
+      <username>deployment</username>
+      <password>deployment123</password>
+    </server>
+    <server>
+      <id>releases</id>
+      <username>deployment</username>
+      <password>deployment123</password>
+    </server>
+    <server>
+      <id>thirdparty</id>
+      <username>deployment</username>
+      <password>deployment123</password>
+    </server>
+  </servers>
+  <mirrors>
+    <mirror>
+      <!--This is used to direct the public snapshots repo in the 
+          profile below over to a different nexus group -->
+      <id>nexus-public-snapshots</id>
+      <mirrorOf>public-snapshots</mirrorOf>
+      <url>http://jxwprddev01:8081/nexus/content/groups/public-snapshots</url>
+    </mirror>
+    <mirror>
+      <!--This sends everything else to /public -->
+      <id>nexus</id>
+      <mirrorOf>*</mirrorOf>
+      <url>http://jxwprddev01:8081/nexus/content/groups/public</url>
+    </mirror>
+  </mirrors>
+  <pluginGroups>
+      <pluginGroup>com.atlassian.maven.plugins</pluginGroup>
+  </pluginGroups>
+  <profiles>
+    <profile>
+      <id>development</id>
+      <properties>
+              <clover2.licenseLocation>\\jxwprdfil02\Software\atlassian\Clover\clover-ant-2.0.2\clover.license</clover2.licenseLocation>
+      </properties>
+
+      <repositories>
+        <repository>
+          <id>central</id>
+          <url>http://central</url>
+          <releases><enabled>true</enabled></releases>
+          <snapshots><enabled>true</enabled></snapshots>
+        </repository>
+      </repositories>
+     <pluginRepositories>
+        <pluginRepository>
+          <id>central</id>
+          <url>http://central</url>
+          <releases><enabled>true</enabled></releases>
+          <snapshots><enabled>true</enabled></snapshots>
+        </pluginRepository>
+        <pluginRepository>
+	        <releases><enabled>true</enabled></releases>
+	        <id>atlassian-m2-repository</id>
+	        <name>Atlassian Maven 2.x Repository</name>
+	        <url>http://repository.atlassian.com/maven2</url>
+	</pluginRepository>
+      </pluginRepositories>
+    </profile>
+    <profile>
+      <!--this profile will allow snapshots to be searched when activated-->
+      <id>public-snapshots</id>
+      <repositories>
+        <repository>
+          <id>public-snapshots</id>
+          <url>http://public-snapshots</url>
+          <releases><enabled>false</enabled></releases>
+          <snapshots><enabled>true</enabled></snapshots>
+        </repository>        
+      </repositories>
+     <pluginRepositories>
+        <pluginRepository>
+          <id>public-snapshots</id>
+          <url>http://public-snapshots</url>
+          <releases><enabled>false</enabled></releases>
+          <snapshots><enabled>true</enabled></snapshots>
+        </pluginRepository>
+      </pluginRepositories>
+    </profile>
+  </profiles>
+  <activeProfiles>
+    <activeProfile>central</activeProfile>
+  </activeProfiles>
+</settings>
