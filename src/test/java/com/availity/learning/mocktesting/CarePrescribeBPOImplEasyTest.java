@@ -1,15 +1,12 @@
 package com.availity.learning.mocktesting;
 
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
+import static org.easymock.EasyMock.*;
 
 import org.junit.Test;
 
 public class CarePrescribeBPOImplEasyTest {
 
-    //@Test
+    @Test(expected = AssertionError.class)
 	public void testUserNotRegistered() {
 		UserDao mockUserDao = createMock(UserDao.class);
 		OrganizationDao mockOrganizationDao = createMock(OrganizationDao.class);
@@ -19,6 +16,7 @@ public class CarePrescribeBPOImplEasyTest {
 		
 		replay(mockUserDao);
 		carePrescribeService.sendServiceRequest("user");
+		
 	}
 
     @Test
@@ -32,6 +30,8 @@ public class CarePrescribeBPOImplEasyTest {
 		expect(mockUserDao.isRegistered("user")).andReturn(Boolean.TRUE);
 		replay(mockUserDao);
 		mockPrematicsService.registerUser("user");
+		mockPrematicsService.recordServiceUsage();
+		expectLastCall().times(1);
 		replay(mockPrematicsService);
 		
 		carePrescribeService.sendServiceRequest("user");
@@ -50,8 +50,10 @@ public class CarePrescribeBPOImplEasyTest {
 		
 		expect(mockUserDao.isRegistered("user")).andReturn(Boolean.TRUE);
 		replay(mockUserDao);
-//		mockPrematicsService.registerOrganization("org");
+		//mockPrematicsService.registerOrganization("org");
 		mockPrematicsService.registerUser("user");
+		mockPrematicsService.recordServiceUsage();
+		expectLastCall().times(1);
 		replay(mockPrematicsService);
 		
 		carePrescribeService.sendServiceRequest("user");
@@ -74,6 +76,8 @@ public class CarePrescribeBPOImplEasyTest {
 		replay(mockOrganizationDao);
 		mockPrematicsService.registerOrganization("org");
 		mockPrematicsService.registerUser("user");
+		mockPrematicsService.recordServiceUsage();
+		expectLastCall().times(2);
 		replay(mockPrematicsService);
 		
 		carePrescribeService.sendServiceRequest("user");
@@ -81,4 +85,29 @@ public class CarePrescribeBPOImplEasyTest {
 		verify(mockPrematicsService);
 		
 	}
+
+    @Test
+	public void test_SendServiceRequest_UserDao_PrematicsSvc_OrgDao_Fail() throws Exception {
+		UserDao mockUserDao = createMock(UserDao.class);
+		OrganizationDao mockOrganizationDao = createMock(OrganizationDao.class);
+		PrematicsService mockPrematicsService = createMock(PrematicsService.class);
+		CarePrescribeBPOImpl carePrescribeService = new CarePrescribeBPOImpl(mockUserDao,
+				mockOrganizationDao, mockPrematicsService);
+		
+		expect(mockUserDao.isRegistered("user")).andReturn(Boolean.FALSE);
+		replay(mockUserDao);
+		expect(mockOrganizationDao.getOrganization("user")).andReturn("org");
+		replay(mockOrganizationDao);
+		mockPrematicsService.registerOrganization("org");
+		mockPrematicsService.registerUser("user");
+		mockPrematicsService.recordServiceUsage();
+		expectLastCall().times(2);
+		replay(mockPrematicsService);
+		
+		carePrescribeService.sendServiceRequest("user");
+		verify(mockUserDao);
+		verify(mockPrematicsService);
+		
+	}
+
 }

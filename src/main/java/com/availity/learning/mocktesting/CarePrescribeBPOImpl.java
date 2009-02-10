@@ -23,8 +23,10 @@ public class CarePrescribeBPOImpl {
       if (!isSiteRegistered) {
         String organization = organizationDao.getOrganization(user);
         prematicsService.registerOrganization(organization);
+        prematicsService.recordServiceUsage();
       }
       prematicsService.registerUser(user);
+      prematicsService.recordServiceUsage();
     } catch (final PrematicsException e) {
       throw new RuntimeException(e);
     }

@@ -6,4 +6,5 @@ public interface PrematicsService {
 
   void registerUser(String user) throws PrematicsException;
 
+  void recordServiceUsage() throws PrematicsException;
 }
