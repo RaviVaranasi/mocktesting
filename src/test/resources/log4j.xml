@@ -14,7 +14,6 @@
         <level value="ERROR"/>
     </logger>
 
-    <!-- Suppress success logging from InteractiveAuthenticationSuccessEvent -->
     <logger name="org.springframework.security">
         <level value="ERROR"/>
     </logger>
@@ -28,7 +27,7 @@
     </logger>
 
     <logger name="org.hibernate">
-        <level value="WARN"/>
+        <level value="ERROR"/>
     </logger>
 
     <!--logger name="org.hibernate.SQL">
@@ -36,7 +35,7 @@
     </logger-->
 
     <logger name="org.springframework">
-        <level value="WARN"/>
+        <level value="ERROR"/>
     </logger>
 
     <logger name="com.availity">

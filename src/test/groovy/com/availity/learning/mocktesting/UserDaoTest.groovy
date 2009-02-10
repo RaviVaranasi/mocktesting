@@ -19,14 +19,12 @@ public class UserDaoTest extends AbstractTransactionalDataSourceSpringContextTes
 
   private UserDao dao = null
 
-  public void setUserDao(UserDao dao) {
+  public void setUserDao(def dao) {
     this.dao = dao
   }
 
   public void testGetUser() throws Exception {
-    User user = dao.getUser(-1L);
-    println user.id
-    println user.firstName
+    def user = dao.getUser(-1L);
 
     assert user != null
     assert user.getId() != null
@@ -41,8 +39,8 @@ public class UserDaoTest extends AbstractTransactionalDataSourceSpringContextTes
 
     user = dao.saveUser(user);
     flush();
+    assert user.getId() != null
 
-    assert null != user.getId()
     user = dao.getUser(user.getId())
     assert "testpass" == user.getPassword()
 

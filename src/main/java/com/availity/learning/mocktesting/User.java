@@ -11,18 +11,15 @@ public class User implements Serializable {
   private static final long serialVersionUID = 3832626162173359411L;
 
   private Long id;
-  private String username;                    // required
-  private String password;                    // required
+  private String username;
+  private String password;
   private String passwordHint;
-  private String firstName;                   // required
-  private String lastName;                    // required
-  private String email;                       // required; unique
+  private String firstName;
+  private String lastName;
+  private String email;
   private String phoneNumber;
   private Integer version;
 
-  /**
-   * Default constructor - creates a new instance with no values set.
-   */
   public User() {
   }
 
@@ -76,11 +73,6 @@ public class User implements Serializable {
     return phoneNumber;
   }
 
-  /**
-   * Returns the full name.
-   *
-   * @return firstName + ' ' + lastName
-   */
   @Transient
   public String getFullName() {
     return firstName + ' ' + lastName;

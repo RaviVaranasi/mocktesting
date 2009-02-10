@@ -28,7 +28,6 @@ public class UserRepository extends HibernateDaoSupport implements UserDao {
 
   public User saveUser(User user) {
     getHibernateTemplate().saveOrUpdate(user);
-    // necessary to throw a DataIntegrityViolation and catch it in UserManager
     getHibernateTemplate().flush();
     return user;
   }
@@ -38,7 +37,7 @@ public class UserRepository extends HibernateDaoSupport implements UserDao {
   }
 
   public boolean isRegistered(String user) {
-    return false;  //To change body of implemented methods use File | Settings | File Templates.
+    return false;
   }
 }
 
