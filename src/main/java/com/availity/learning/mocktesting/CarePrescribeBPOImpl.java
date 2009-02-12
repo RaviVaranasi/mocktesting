@@ -14,8 +14,7 @@ public class CarePrescribeBPOImpl {
 
   }
 
-  public CarePrescribeBPOImpl(UserDao userDao,
-                              OrganizationDao organizationDao, PrematicsService prematicsService) {
+  public CarePrescribeBPOImpl(UserDao userDao, OrganizationDao organizationDao, PrematicsService prematicsService) {
     this.userDao = userDao;
     this.organizationDao = organizationDao;
     this.prematicsService = prematicsService;
