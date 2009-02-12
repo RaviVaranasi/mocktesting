@@ -2,7 +2,6 @@ package com.availity.learning.mocktesting;
 
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -19,6 +18,10 @@ public class UserRepository extends HibernateDaoSupport implements UserDao {
   public User getUser(String username) {
     List<User> users = getHibernateTemplate().find("from User u where username=?", username);
     return users != null && !users.isEmpty() ? users.get(0) : new User();
+  }
+
+  public List<User> getUserByLastName(String lastname) {
+    return null;  //To change body of implemented methods use File | Settings | File Templates.
   }
 
   @SuppressWarnings("unchecked")

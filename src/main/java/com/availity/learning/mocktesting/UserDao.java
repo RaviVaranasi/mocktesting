@@ -10,6 +10,8 @@ public interface UserDao {
 
   User getUser(String username);
 
+  List<User> getUserByLastName(String lastname);
+
   List<User> getUsers();
 
   User saveUser(User user);

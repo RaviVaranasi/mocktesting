@@ -7,4 +7,5 @@ public class OrganizationDaoImpl implements OrganizationDao {
   public String getOrganization(String user) {
     return null;  //To change body of implemented methods use File | Settings | File Templates.
   }
+
 }

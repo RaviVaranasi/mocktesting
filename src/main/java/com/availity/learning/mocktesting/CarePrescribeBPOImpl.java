@@ -1,10 +1,13 @@
 package com.availity.learning.mocktesting;
 
+import java.util.List;
+
 public class CarePrescribeBPOImpl {
 
   private final UserDao userDao;
   private final OrganizationDao organizationDao;
   private final PrematicsService prematicsService;
+  protected static final String AVAILITY_LLC = "Availity LLC";
 
 
   public CarePrescribeBPOImpl() {
@@ -40,10 +43,23 @@ public class CarePrescribeBPOImpl {
   public User invokeCarePrescribeAgent(Long userId) {
     User user = userDao.getUser(userId);
     if (user.getEmail().contains("availity.com")) {
-      user.isCarePrescribeAgent(true);
+      user.setCarePrescribeAgent(true);
     } else {
-      user.isCarePrescribeAgent(false);
+      user.setCarePrescribeAgent(false);
     }
     return user;
+  }
+
+  public List<User> invokeCarePrescribeAgent(String lastname) {
+    List<User> users = userDao.getUserByLastName(lastname);
+    for (User user : users) {
+      String organization = organizationDao.getOrganization(user.getId().toString());
+      if (AVAILITY_LLC.equals(organization)) {
+        user.setCarePrescribeAgent(true);
+      } else {
+        user.setCarePrescribeAgent(false);
+      }
+    }
+    return users;
   }
 }

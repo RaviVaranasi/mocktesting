@@ -83,7 +83,7 @@ public class User implements Serializable {
   public boolean isCarePrescribeAgent() {
     return carePrescribeAgent;
   }
-  
+
   @Version
   public Integer getVersion() {
     return version;
@@ -145,11 +145,6 @@ public class User implements Serializable {
 
   public int hashCode() {
     return (username != null ? username.hashCode() : 0);
-  }
-
-  public void isCarePrescribeAgent(boolean bool) {
-    this.carePrescribeAgent = bool;
-    //To change body of created methods use File | Settings | File Templates.
   }
 
 
