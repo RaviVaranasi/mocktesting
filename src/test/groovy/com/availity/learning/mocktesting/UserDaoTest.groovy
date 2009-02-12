@@ -42,15 +42,14 @@ public class UserDaoTest extends AbstractTransactionalDataSourceSpringContextTes
     assert user.getId() != null
 
     user = dao.getUser(user.getId())
-    assert "testpass" == user.getPassword()
+    assert "testpass" == user.password
 
-    assert user.password == "testpass"
     dao.remove(user.getId());
     flush();
 
     def userAgain = dao.getUser(user.getId());
 
-    assert userAgain.password != "testpass"
+    assert "testpass" != userAgain.password
   }
 
   protected void flush() {

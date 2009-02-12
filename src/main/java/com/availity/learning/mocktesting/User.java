@@ -19,6 +19,7 @@ public class User implements Serializable {
   private String email;
   private String phoneNumber;
   private Integer version;
+  private boolean carePrescribeAgent;
 
   public User() {
   }
@@ -78,6 +79,11 @@ public class User implements Serializable {
     return firstName + ' ' + lastName;
   }
 
+  @Transient
+  public boolean isCarePrescribeAgent() {
+    return carePrescribeAgent;
+  }
+  
   @Version
   public Integer getVersion() {
     return version;
@@ -119,6 +125,10 @@ public class User implements Serializable {
     this.version = version;
   }
 
+  public void setCarePrescribeAgent(boolean carePrescribeAgent) {
+    this.carePrescribeAgent = carePrescribeAgent;
+  }
+
   public boolean equals(Object o) {
     if (this == o) {
       return true;
@@ -136,5 +146,12 @@ public class User implements Serializable {
   public int hashCode() {
     return (username != null ? username.hashCode() : 0);
   }
+
+  public void isCarePrescribeAgent(boolean bool) {
+    this.carePrescribeAgent = bool;
+    //To change body of created methods use File | Settings | File Templates.
+  }
+
+
 }
 

@@ -7,9 +7,15 @@ public class CarePrescribeBPOImpl {
   private final PrematicsService prematicsService;
 
 
+  public CarePrescribeBPOImpl() {
+    userDao = new UserRepository();
+    organizationDao = new OrganizationDaoImpl();
+    prematicsService = new PrematicsWebServiceImpl();
+
+  }
+
   public CarePrescribeBPOImpl(UserDao userDao,
-    OrganizationDao organizationDao, PrematicsService prematicsService) {
-    super();
+                              OrganizationDao organizationDao, PrematicsService prematicsService) {
     this.userDao = userDao;
     this.organizationDao = organizationDao;
     this.prematicsService = prematicsService;
@@ -32,4 +38,13 @@ public class CarePrescribeBPOImpl {
     }
   }
 
+  public User invokeCarePrescribeAgent(Long userId) {
+    User user = userDao.getUser(userId);
+    if (user.getEmail().contains("availity.com")) {
+      user.isCarePrescribeAgent(true);
+    } else {
+      user.isCarePrescribeAgent(false);
+    }
+    return user;
+  }
 }
