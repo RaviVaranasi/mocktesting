@@ -40,7 +40,7 @@ public class CarePrescribeBPOImpl {
     }
   }
 
-  public User invokeCarePrescribeAgent(Long userId) {
+  public User invokeCarePrescribeAgentFromEmail(Long userId) {
     User user = userDao.getUser(userId);
     if (user.getEmail().contains("availity.com")) {
       user.setCarePrescribeAgent(true);
@@ -50,7 +50,7 @@ public class CarePrescribeBPOImpl {
     return user;
   }
 
-  public List<User> invokeCarePrescribeAgent(String lastname) {
+  public List<User> invokeCarePrescribeAgentFromOrganization(String lastname) {
     List<User> users = userDao.getUserByLastName(lastname);
     for (User user : users) {
       String organization = organizationDao.getOrganization(user.getId().toString());

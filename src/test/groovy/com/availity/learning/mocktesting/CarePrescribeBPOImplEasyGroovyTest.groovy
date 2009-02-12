@@ -66,7 +66,7 @@ public class CarePrescribeBPOImplEasyGroovyTest {
 
     // Crazee talk..., can't do this in Java...
     carePrescribeService = new CarePrescribeBPOImpl(userDao: mockUserDao)
-    def returnUser = carePrescribeService.invokeCarePrescribeAgent(1)
+    def returnUser = carePrescribeService.invokeCarePrescribeAgentFromEmail(1)
     assert returnUser.isCarePrescribeAgent()
   }
 
@@ -86,7 +86,7 @@ public class CarePrescribeBPOImplEasyGroovyTest {
     mockUserDao = [getUser: {mockReturnUser}] as UserDao
 
     carePrescribeService = new CarePrescribeBPOImpl(userDao: mockUserDao)
-    def returnUser = carePrescribeService.invokeCarePrescribeAgent(1)
+    def returnUser = carePrescribeService.invokeCarePrescribeAgentFromEmail(1)
     assert !returnUser.isCarePrescribeAgent()
   }
 
@@ -118,7 +118,7 @@ public class CarePrescribeBPOImplEasyGroovyTest {
     mockOrganizationDao = [getOrganization: {CarePrescribeBPOImpl.AVAILITY_LLC}] as OrganizationDao
 
     carePrescribeService = new CarePrescribeBPOImpl(userDao: mockUserDao, organizationDao: mockOrganizationDao)
-    def returnUsers = carePrescribeService.invokeCarePrescribeAgent("doe")
+    def returnUsers = carePrescribeService.invokeCarePrescribeAgentFromOrganization("doe")
 
     //WTH!
     returnUsers.each {
